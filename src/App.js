@@ -1,23 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import NameForm from "./components/NameForm";
+import PokemonDisplay from "./components/PokemonDisplay";
+import "./App.css";
 
 function App() {
+  const [name, setName] = useState("");
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Quel Pokémon es-tu?</h1>
+      <NameForm onSubmit={setName} />
+      {name && <PokemonDisplay name={name} />}
     </div>
   );
 }
