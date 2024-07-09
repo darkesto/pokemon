@@ -1,4 +1,4 @@
-name: Build and Push Docker Image to Google Cloud
+name: Build, Push & Deploy Docker Image to Google Cloud
 
 on:
   push:
@@ -29,3 +29,10 @@ jobs:
 
       - name: Push the Docker image
         run: docker push europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon
+        
+      - name: Deploy to Google Cloud Run
+        run: |
+          gcloud run deploy service-student-darko-dev --image=europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon --project pokedevops --region europe-west9 --allow-unauthenticated
+        env:
+          GCP_PROJECT: pokedevops
+          GCP_REGION: europe-west9
