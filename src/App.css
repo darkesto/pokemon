@@ -55,7 +55,7 @@ p, h1 {
 }
 
 img {
-  max-width: 100%;
+  width: 500px;
   height: auto;
   /*border: 1px solid #333;  slight border for definition */
 }
