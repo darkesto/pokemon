@@ -29,10 +29,7 @@ function PokemonDisplay({ name }) {
   return (
     <div>
       <h1>Tu es {pokemon.name}! 😊 </h1>
-      <img
-        src={pokemon.sprites.other.officialArtwork.front_default}
-        alt={pokemon.name}
-      />
+      <img src={pokemon.sprites.other.home.front_default} alt={pokemon.name} />
     </div>
   );
 }
