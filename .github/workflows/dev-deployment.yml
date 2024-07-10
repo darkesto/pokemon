@@ -22,9 +22,19 @@ jobs:
       - name: Configure Docker for Google Cloud
         run: gcloud auth configure-docker europe-west9-docker.pkg.dev
 
-      - name: Determine Tag
-        id: get_tag
-        run: echo "IMAGE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+      - name: Determine Image Tag
+        id: tag
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            TAG="${GITHUB_REF#refs/tags/}"
+          elif [[ "${GITHUB_REF}" == refs/heads/* ]]; then
+            TAG="${GITHUB_REF#refs/heads/}"
+          else
+            TAG="latest"
+          fi
+          echo "TAG=$TAG" >> $GITHUB_ENV
+          echo "IMAGE_TAG=${TAG}" >> $GITHUB_ENV
+          echo "::set-output name=image_tag::${TAG}"
 
       - name: Build the Docker image
         run: docker build -t europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon:${{ env.IMAGE_TAG }} .
