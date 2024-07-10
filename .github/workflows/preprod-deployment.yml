@@ -2,13 +2,11 @@ name: Pre-Prod Deployment
 
 on:
   push:
-    branches:
-      - main
     tags:
       - 'preprod-*'
 
 jobs:
-  build-and-push:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -19,24 +17,7 @@ jobs:
         with:
           credentials_json: '${{ secrets.POKEMON_SECRET }}'
 
-      - name: Configure Docker for Google Cloud
-        run: gcloud auth configure-docker europe-west9-docker.pkg.dev
-
-      - name: Set Docker Image Tag
-        id: vars
+      - name: Pull and Deploy the Docker image
         run: |
-          if [[ $GITHUB_REF == refs/tags/* ]]; then
-            echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
-          else
-            echo "::set-output name=tag::latest"
-          fi
-
-      - name: Build the Docker image
-        run: docker build -t europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon:${{ steps.vars.outputs.tag }} .
-
-      - name: Push the Docker image
-        run: docker push europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon:${{ steps.vars.outputs.tag }}
-
-      - name: Deploy to Google Cloud Run
-        run: |
-          gcloud run deploy service-student-darko-preprod --image=europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon:${{ steps.vars.outputs.tag }} --project pokedevops --region europe-west9 --allow-unauthenticated
+          IMAGE_TAG="${GITHUB_REF#refs/tags/}"
+          gcloud run deploy service-student-darko-preprod --image=europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon:${IMAGE_TAG} --project pokedevops --region europe-west9 --allow-unauthenticated
