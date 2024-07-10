@@ -22,12 +22,10 @@ jobs:
           gcloud auth configure-docker europe-west9-docker.pkg.dev
 
       - name: Build the Docker image
-        run: docker build -t europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon .
+        run: docker build -t europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon:${{ github.sha }} .
 
       - name: Push the Docker image
-        run: docker push europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon
+        run: docker push europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon:${{ github.sha }}
         
       - name: Deploy to Google Cloud Run
-        run: |
-          gcloud run deploy service-student-darko-dev --image=europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon --project pokedevops --region europe-west9 --allow-unauthenticated
-     
+        run: gcloud run deploy service-student-darko-dev --image=europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon:${{ github.sha }} --project pokedevops --region europe-west9 --allow-unauthenticated
