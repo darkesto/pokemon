@@ -2,6 +2,8 @@ name: Pre-Prod Deployment
 
 on:
   push:
+    branches:
+      - main
     tags:
       - 'preprod-*'
 
