@@ -18,14 +18,14 @@ jobs:
           credentials_json: '${{ secrets.PREPROD_POKEMON_SECRET }}'
 
       - name: Configure Docker for Google Cloud
-        run: gcloud auth configure-docker preprod-europe-west9-docker.pkg.dev
+        run: gcloud auth configure-docker preprod-europe-west9-docker.pkg.preprod
 
       - name: Build the Docker image
-        run: docker build -t preprod-europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon:${GITHUB_REF#refs/tags/} .
+        run: docker build -t preprod-europe-west9-docker.pkg.preprod/pokedevops/student-darko/pokemon:${GITHUB_REF#refs/tags/} .
 
       - name: Push the Docker image
-        run: docker push preprod-europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon:${GITHUB_REF#refs/tags/}
+        run: docker push preprod-europe-west9-docker.pkg.preprod/pokedevops/student-darko/pokemon:${GITHUB_REF#refs/tags/}
 
       - name: Deploy to Google Cloud Run
         run: |
-          gcloud run deploy service-student-darko-preprod --image=preprod-europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon:${GITHUB_REF#refs/tags/} --project pokedevops --region europe-west9 --allow-unauthenticated
+          gcloud run deploy service-student-darko-preprod --image=preprod-europe-west9-docker.pkg.preprod/pokedevops/student-darko/pokemon:${GITHUB_REF#refs/tags/} --project pokedevops --region europe-west9 --allow-unauthenticated
