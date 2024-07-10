@@ -17,7 +17,7 @@ jobs:
       - name: Log in to Google Cloud
         uses: google-github-actions/auth@v0
         with:
-          credentials_json: '${{ secrets.PREPROD_POKEMON_SECRET }}'
+          credentials_json: '${{ secrets.POKEMON_SECRET }}'
 
       - name: Configure Docker for Google Cloud
         run: gcloud auth configure-docker preprod-europe-west9-docker.pkg.preprod
