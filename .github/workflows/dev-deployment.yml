@@ -36,6 +36,9 @@ jobs:
           echo "IMAGE_TAG=${TAG}" >> $GITHUB_ENV
           echo "::set-output name=image_tag::${TAG}"
 
+      - name: Extract version tag
+        run: echo "REACT_APP_VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+
       - name: Build the Docker image
         run: docker build -t europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon:${{ env.IMAGE_TAG }} .
 
