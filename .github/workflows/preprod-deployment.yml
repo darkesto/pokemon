@@ -20,7 +20,7 @@ jobs:
           credentials_json: '${{ secrets.POKEMON_SECRET }}'
 
       - name: Configure Docker for Google Cloud
-        run: gcloud auth configure-docker preprod-europe-west9-docker.pkg.preprod
+        run: gcloud auth configure-docker preprod-europe-west9-docker.pkg.dev
 
       - name: Set Docker Image Tag
         id: vars
@@ -32,11 +32,11 @@ jobs:
           fi
 
       - name: Build the Docker image
-        run: docker build -t preprod-europe-west9-docker.pkg.preprod/pokedevops/student-darko/pokemon:${{ steps.vars.outputs.tag }} .
+        run: docker build -t preprod-europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon:${{ steps.vars.outputs.tag }} .
 
       - name: Push the Docker image
-        run: docker push preprod-europe-west9-docker.pkg.preprod/pokedevops/student-darko/pokemon:${{ steps.vars.outputs.tag }}
+        run: docker push preprod-europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon:${{ steps.vars.outputs.tag }}
 
       - name: Deploy to Google Cloud Run
         run: |
-          gcloud run deploy service-student-darko-preprod --image=preprod-europe-west9-docker.pkg.preprod/pokedevops/student-darko/pokemon:${{ steps.vars.outputs.tag }} --project pokedevops --region europe-west9 --allow-unauthenticated
+          gcloud run deploy service-student-darko-preprod --image=preprod-europe-west9-docker.pkg.dev/pokedevops/student-darko/pokemon:${{ steps.vars.outputs.tag }} --project pokedevops --region europe-west9 --allow-unauthenticated
