@@ -9,7 +9,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Quel Pokémon es-tu bg????</h1>
+      <h1>Quel Pokémon es-tu bg bg????</h1>
       <NameForm onSubmit={setName} />
       {name && <PokemonDisplay name={name} />}
       <Footer />
